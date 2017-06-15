@@ -59,6 +59,21 @@ class MatrixTest extends Suite {
       val expected = List(List(11,14,17,20), List(23,30,37,44), List(35,46,57,68))
       matrixListEquals(res, expected)
     }
+
+    def testConstantMatrixMultiplication: Boolean = {
+      val mat = Matrix.from2DVector(List(List(1,2,3,4), List(5,6,7,8)))
+      val expected = List(List(2,4,6,8), List(10,12,14,16))
+      val res = mat * 2
+      matrixListEquals(res, expected)
+    }
+
+    def testHadamardProduct: Boolean = {
+      val mat1 = Matrix.fromVector(List(2,4,6,8))
+      val mat2 = Matrix.fromVector(List(3,6,9,12))
+      val res = mat1 *:* mat2
+      val expected = List(List(6,24,54,96))
+      matrixListEquals(res, expected)
+    }
   }
 
   def getClasses: List[Class[_]] = this.getClass.getClasses.toList

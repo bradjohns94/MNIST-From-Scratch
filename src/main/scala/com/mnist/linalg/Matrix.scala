@@ -82,6 +82,26 @@ class Matrix(rows: Int, columns: Int) {
     )
   }
 
+  /* Perform matrix multiplcation by a single value */
+  def *(factor: Double): Matrix = {
+    Matrix.from2DVector(
+      this.getRows.map{ row =>
+        row.map{ element => element * factor }
+      }
+    )
+  }
+
+  /* Perform Hadamard Multiplication (component-wise) over 2 vectors */
+  def *:*(factor: Matrix): Matrix = {
+    if (factor.getShape != this.getShape)
+      throw new IllegalArgumentException(s"Cannot perform hadamard multiplication between (${this.getRows}x${this.getColumns}) matrix and (${factor.getRows}x${factor.getColumns}) matrix")
+    Matrix.from2DVector(
+      (this.mat.flatten.toList zip factor.getRows.flatten.toList)
+        .map{ pair => pair._1 * pair._2 }.toArray
+        .grouped(this.getNumColumns).toArray
+    )
+  }
+
   def apply(fn: Double => Double): Matrix =
     Matrix.from2DVector( mat.map{ row =>
       row.map{ e => fn(e) }
@@ -96,8 +116,16 @@ class Matrix(rows: Int, columns: Int) {
     this
   }
 
+  def flatten: Array[Double] = mat.flatten
+
   /* Neatly print the matrix */
   override def toString: String = (this.getRows.map{ _.mkString("\t") }).mkString("\n")
+
+  /* Compare each value between two matricies */
+  def equals(other: Matrix): Boolean = {
+    this.getShape == other.getShape &&
+    !(this.flatten zip other.flatten).exists{ case (a, b) => a != b }
+  }
 }
 
 object Matrix {

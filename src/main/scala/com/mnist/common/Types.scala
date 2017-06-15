@@ -9,9 +9,13 @@ package object Types {
     = a.map{intToDouble(_)}
   implicit def intSeqToVec(s: Seq[Int]): Vec
     = s.map{intToDouble(_)}.toArray
+  implicit def doubleSeqToVec(s: Seq[Double]): Vec
+    = s.toArray
   implicit def intArrayToMat(a: Array[Array[Int]]): Mat
     = a.map{ _.map{ v => intToDouble(v) } }
   implicit def intSeqToMat(s: Seq[Seq[Int]]): Mat
     = s.map{ _.map{ v => intToDouble(v) }.toArray }.toArray
+  implicit def doubeSeqToMat(s: Seq[Seq[Double]]): Mat
+    = s.map{ _.toArray }.toArray
   implicit def boolToInt(b: Boolean) = if (b) 1 else 0
 }

@@ -1,10 +1,14 @@
 package com.mnist.nn
 
+import com.mnist.linalg.Matrix
+
 trait Activation {
   /* Activation Function */
   def fn(x: Double): Double
+  def fn(x: Matrix): Matrix = x.apply(fn)
   /* Derivative of the Activation Function */
   def derivative(x: Double): Double
+  def derivative(x: Matrix): Matrix = x.apply(derivative)
 }
 
 object Activations {
