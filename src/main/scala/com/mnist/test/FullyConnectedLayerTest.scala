@@ -43,20 +43,25 @@ class FullyConnectedLayerTest extends Suite {
       val inputs = Matrix.fromVector(List(1, 0, 1))
       val weightsOut = Matrix.from2DVector( List( List(0.1, 0.2), List(0.3, 0.4) ) )
       val nextError = Matrix.fromVector( List(0.2, 0.8) )
-      val weightedError = weightsOut.transpose * nextError
-      // error = (weights.transpose * errorOfNextLayer) (*) a(l)
-      // error = ( [ 0.1  0.3 ] x [ 0.2  0.8 ] ) (*) Activations.Sigmoid.derivative(inputs * weights + biases)
-      //         ( [ 0.2  0.4 ]                )
-      // error = [ 0.24 1.20 ] x Activations.Sigmoid.derivative(inputs * weights + biases)
-      val z = (inputs * layer.getWeights) + layer.getBiases
-      val expectedError = Matrix.fromVector(List(0.24, 1.20)) * Activations.Sigmoid.derivative(z)
-      val expectedWeights = layer.getWeights - ((inputs * expectedError) * 0.1)
-      val expectedBiases = layer.getBiases - expectedError
-      val expectedWeightedError = layer.getWeights.transpose * expectedError
-      val resWeightedError = layer.fit(inputs, weightedError)
-      (resWeightedError equals expectedWeightedError) &&
-      (layer.getWeights equals expectedWeights) &&
-      (layer.getBiases equals expectedBiases)
+      val expectedWeightedError = Matrix.fromVector(List(
+        (0.036 * Activations.Sigmoid.derivative(0.9)) + (0.38 * 0.3 * Activations.Sigmoid.derivative(1.2)),
+        (0.072 * Activations.Sigmoid.derivative(0.9)) + (0.19 * Activations.Sigmoid.derivative(1.2)),
+        (0.108 * Activations.Sigmoid.derivative(0.9)) + (0.38 * 0.7 * Activations.Sigmoid.derivative(1.2))
+      ))
+      val expectedWeights = Matrix.from2DVector(List(
+        List(0.2 - (0.018 * Activations.Sigmoid.derivative(0.9)), 0.3 - (0.038 * Activations.Sigmoid.derivative(1.2))),
+        List(0.4, 0.5),
+        List(0.6 - (0.018 * Activations.Sigmoid.derivative(0.9)), 0.7 - (0.038 * Activations.Sigmoid.derivative(1.2)))
+      ))
+      val expectedBiases = Matrix.fromVector(List(
+        0.1 - (0.018 * Activations.Sigmoid.derivative(0.9)),
+        0.2 - (0.038 * Activations.Sigmoid.derivative(1.2))
+      ))
+      val res = layer.fit(inputs, nextError * weightsOut.transpose)
+      /* Use approximately equals because floating point math */
+      (res ~= expectedWeightedError) &&
+      (layer.getWeights ~= expectedWeights) &&
+      (layer.getBiases ~= expectedBiases)
     }
   }
 }

@@ -29,10 +29,10 @@ class FullyConnectedLayer(inputSize: Int, layerSize: Int,
    * for the previous layer */
   def fit(inputs: Matrix, weightedError: Matrix): Matrix = {
     /* *:* -> component multiplication */
-    val error = weightedError *:* activationFn.derivative(calcZ(inputs)).transpose
-    val res = this.weights.transpose * error
-    this.biases -= error.transpose * learningRate
-    this.weights -= (inputs * error) * learningRate
+    val error = weightedError *:* activationFn.derivative(calcZ(inputs))
+    val res = error * this.weights.transpose
+    this.biases -= error * learningRate
+    this.weights -= (inputs.transpose * error) * learningRate
     res
   }
 

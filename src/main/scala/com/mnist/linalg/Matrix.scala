@@ -126,6 +126,13 @@ class Matrix(rows: Int, columns: Int) {
     this.getShape == other.getShape &&
     !(this.flatten zip other.flatten).exists{ case (a, b) => a != b }
   }
+
+  /* Compare each value between two matricies to 5 significant figures */
+  def ~=(other: Matrix): Boolean = {
+    this.getShape == other.getShape &&
+    !(this.flatten zip other.flatten).exists{ case (a, b) => Math.abs(a - b) > 0.00001 }
+ }
+
 }
 
 object Matrix {
