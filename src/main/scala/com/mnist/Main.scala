@@ -10,5 +10,6 @@ object Main {
   def runTests: Unit = {
     new MatrixTest().runTests
     new FullyConnectedLayerTest().runTests
+    new FunctionTest().runTests
   }
 }
