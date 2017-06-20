@@ -43,6 +43,7 @@ class FullyConnectedLayerTest extends Suite {
       val inputs = Matrix.fromVector(List(1, 0, 1))
       val weightsOut = Matrix.from2DVector( List( List(0.1, 0.2), List(0.3, 0.4) ) )
       val nextError = Matrix.fromVector( List(0.2, 0.8) )
+      /* I did the math. Please just trust me? */
       val expectedWeightedError = Matrix.fromVector(List(
         (0.036 * Activations.Sigmoid.derivative(0.9)) + (0.38 * 0.3 * Activations.Sigmoid.derivative(1.2)),
         (0.072 * Activations.Sigmoid.derivative(0.9)) + (0.19 * Activations.Sigmoid.derivative(1.2)),

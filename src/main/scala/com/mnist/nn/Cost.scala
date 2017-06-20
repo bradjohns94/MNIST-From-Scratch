@@ -35,7 +35,7 @@ object Costs {
       }} * (-1.0 / zipped.length)
     }
 
-    /* d(y'(i))/d(C) = (1/n)((y(i) - y'(i)) / (y'(i) * (1 - y'(i)))) */
+    /* d(y'(i))/d(C) = (1/n)((y'(i) - y(i)) / (y'(i) * (1 - y'(i)))) */
     def derivative(expected: Matrix, actual: Matrix): Matrix = {
       val n = expected.flatten.length
       Matrix.fromVector(

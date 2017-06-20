@@ -11,5 +11,6 @@ object Main {
     new MatrixTest().runTests
     new FullyConnectedLayerTest().runTests
     new FunctionTest().runTests
+    new NeuralNetworkTest().runTests
   }
 }
